@@ -8,11 +8,15 @@ download_aicrowd_dataset(AICROWD_API_KEY)
 install_packages <- function() {
   # install.packages("caret")
   # install.packages("rpart")
+  
 }
 install_packages()
 global_imports <- function() {
   # require("caret")
   # require("rpart")
+  library(gridExtra)
+  library(grid)
+  library(ggplot2)
 }
 global_imports()
 # Load the dataset.
