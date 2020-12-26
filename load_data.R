@@ -17,6 +17,9 @@ global_imports <- function() {
   library(gridExtra)
   library(grid)
   library(ggplot2)
+  library(plyr)
+  library(lattice)
+  library(corrplot)
 }
 global_imports()
 # Load the dataset.

@@ -5,7 +5,7 @@ source("load_data.R")
 
 source("preprocesDataFunctions.R")
 
-preprocess_X_data <- function (x_raw){
+preprocess_X_data <- function(x_raw){
   # Data preprocessing function: given X_raw, clean the data for training or prediction.
   
   # Parameters
@@ -16,7 +16,7 @@ preprocess_X_data <- function (x_raw){
   # Returns
   # -------
   # A cleaned / preprocessed version of the dataset
-  tmp <- proprocessData_local(xraw)
+  tmp <- proprocessData_local(x_raw)
   # YOUR CODE HERE ------------------------------------------------------
   
   
@@ -45,7 +45,7 @@ fit_model <- function (x_raw, y_raw){
   
   # x_clean = preprocess_X_data(x_raw)  # preprocess your data before fitting
   
-  trained_model = lm(unlist(ydata) ~ 1) # toy linear model
+  trained_model = lm(unlist(ydata) ~  pol_no_claims_discount ) # toy linear model
   
   # ---------------------------------------------------------------------
   # The result trained_model is something that you will save in the next section
