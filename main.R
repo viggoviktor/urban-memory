@@ -23,7 +23,6 @@ preprocess_X_data <- function(x_raw){
   # ---------------------------------------------------------------------
   return(tmp) # change this to return the cleaned data
 }
-
 fit_model <- function (x_raw, y_raw){
   # Model training function: given training data (X_raw, y_raw), train this pricing model.
   
@@ -45,11 +44,32 @@ fit_model <- function (x_raw, y_raw){
   
   # x_clean = preprocess_X_data(x_raw)  # preprocess your data before fitting
   
-  trained_model = lm(unlist(ydata) ~  1 ) # toy linear model
+  
+  data <- proprocessData_local(cbind(Xdata,ydata))
+  data <- data %>% select(-('id_policy'))
+  sparse_matrix <- Matrix::sparse.model.matrix(claim_amount ~ ., data = data)[,-1]
+  X_train_dmat = xgb.DMatrix(sparse_matrix, label = data$claim_amount)
+  
+  param <- list(max_depth = 5, eta = 0.01, verbose = 1,
+                objective = "reg:squarederror",
+                eval_metric = "auc")
+  bst <- xgb.train(param, X_train_dmat, nrounds = 100)
+  
+  
+  xgboost <- xgb.cv(data = X_train_dmat,
+                    nrounds = 100,
+                    #nthread = 2,
+                    nfold = 5,
+                    metrics = list("rmse"),
+                    max_depth = 5,
+                    eta = 0.01,
+                    objective = "reg:squarederror",
+                    prediction = TRUE)
+  returnval <- xgboost$pred
   
   # ---------------------------------------------------------------------
   # The result trained_model is something that you will save in the next section
-  return(trained_model)
+  return(returnval)
 }
 model = fit_model(Xdata, ydata)
 predict_expected_claim <- function(model, x_raw){
@@ -76,7 +96,7 @@ predict_expected_claim <- function(model, x_raw){
   # YOUR CODE HERE ------------------------------------------------------
   
   # x_clean = preprocess_X_data(x_raw)  # preprocess your data before fitting
-  expected_claims = exp(log(predict(model, newdata = x_raw)))*1.01+1000  # tweak this to work with your model
+  expected_claims = predict(model, newdata = x_raw)*1.01+1000  # tweak this to work with your model
   
   return(expected_claims)  
 }

@@ -20,6 +20,10 @@ global_imports <- function() {
   library(plyr)
   library(lattice)
   library(corrplot)
+  library(xgboost)
+  library(caret)
+  library(dplyr)
+  library(Matrix)
 }
 global_imports()
 # Load the dataset.
