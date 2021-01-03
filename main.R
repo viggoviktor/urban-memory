@@ -45,7 +45,7 @@ fit_model <- function (x_raw, y_raw){
   
   # x_clean = preprocess_X_data(x_raw)  # preprocess your data before fitting
   
-  trained_model = lm(unlist(ydata) ~  pol_no_claims_discount ) # toy linear model
+  trained_model = lm(unlist(ydata) ~  1 ) # toy linear model
   
   # ---------------------------------------------------------------------
   # The result trained_model is something that you will save in the next section
@@ -76,7 +76,7 @@ predict_expected_claim <- function(model, x_raw){
   # YOUR CODE HERE ------------------------------------------------------
   
   # x_clean = preprocess_X_data(x_raw)  # preprocess your data before fitting
-  expected_claims = predict(model, newdata = x_raw)+0.01  # tweak this to work with your model
+  expected_claims = exp(log(predict(model, newdata = x_raw)))*1.01+1000  # tweak this to work with your model
   
   return(expected_claims)  
 }
